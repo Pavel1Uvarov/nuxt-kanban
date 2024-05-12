@@ -1,5 +1,5 @@
 <template>
-	<aside class="bg-sky-950 p-4 h-full relative">
+	<aside class="bg-gray-900 p-4 h-full relative min-h-[100vh]">
 		Sidebar
 		<UiButton>
 			test
