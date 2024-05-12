@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	modules: ['@nuxt/eslint', '@nuxt/image', 'shadcn-nuxt', ['@nuxtjs/google-fonts', {
+	modules: ['@nuxt/eslint', '@nuxt/image', 'shadcn-nuxt', 'nuxt-icon', ['@nuxtjs/google-fonts', {
 		families: {
 			'Roboto': true,
 			'Inter': '200..700', // Merged the configurations for 'Inter'

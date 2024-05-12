@@ -2,7 +2,10 @@
 	<section class="grid grid-cols-7">
 		<LayoutSidebar class="col-span-1" />
 		<div class="col-span-6">
-			<slot />
+			<LayoutHeader />
+			<div>
+				<slot />
+			</div>
 		</div>
 	</section>
 </template>

@@ -21,6 +21,12 @@ module.exports = {
 			},
 		},
 		extend: {
+			transitionDuration: {
+				DEFAULT: '333ms',
+			},
+			transitionTimingFunction: {
+				DEFAULT: 'ease-in-out',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: 0 },
