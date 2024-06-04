@@ -8,8 +8,20 @@
 					</h1>
 					<form
 						class="space-y-4 md:space-y-6"
-						action="#"
+						@submit="submit"
 					>
+						<div v-show="ui.isRegistration">
+							<UiLabel
+								for="nameField"
+							>
+								Name
+							</UiLabel>
+							<UiInput
+								id="nameField"
+								v-model="formData.name"
+								type="text"
+							/>
+						</div>
 						<div>
 							<UiLabel
 								for="emailField"
@@ -46,13 +58,18 @@
 							variant="default"
 							class="w-full"
 						>
-							Sign in
+							<Loader2
+								v-show="ui.loading"
+								class="w-4 h-4 mr-2 animate-spin"
+							/>
+							{{ !ui.isRegistration ? "Sign In" : "Sign Up" }}
 						</UiButton>
 						<p class="text-sm font-light text-gray-500 dark:text-gray-400">
-							Don’t have an account yet? <a
+							{{ !ui.isRegistration ? 'Don’t have an account yet? ' : 'Already have account? ' }}<a
 								href="#"
 								class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-							>Sign up</a>
+								@click="ui.isRegistration = !ui.isRegistration"
+							> {{ !ui.isRegistration ? 'Sign up' : 'Sign In' }}</a>
 						</p>
 					</form>
 				</div>
@@ -62,6 +79,9 @@
 </template>
 
 <script lang="ts" setup>
+import { Loader2 } from 'lucide-vue-next';
+import { useAuthStore } from '~/store/auth.store';
+
 definePageMeta({
 	layout: 'auth',
 });
@@ -71,24 +91,62 @@ useSeoMeta({
 });
 
 const authStore = useAuthStore();
+const router = useRouter();
+const appwrite = useAppWrite();
 
 const formData = ref({
 	email: '',
 	password: '',
-	remember: false,
+	name: '',
 });
 
 const ui = reactive({
 	loading: false,
+	isRegistration: false,
 });
 
-const login = async () => {
-	ui.loading = true;
-	await account.createEmailSession(formData.value);
-	const response = account.get();
+const submit = async (e: Event) => ui.isRegistration ? await register(e) : await login(e);
 
-	if (response) {
-		
+const login = async (e: Event) => {
+	e.preventDefault();
+
+	ui.loading = true;
+
+	try {
+		await appwrite.account.createEmailPasswordSession(
+			formData.value.email,
+			formData.value.password,
+		);
+
+		const user = await appwrite.account.get();
+
+		authStore.setUser({
+			email: user.email,
+			name: user.name,
+			status: true,
+		});
+
+		router.push('/');
 	}
+	catch (err) {
+		console.log(err);
+	}
+
+	ui.loading = false;
+};
+
+const register = async (e: Event) => {
+	e.preventDefault();
+
+	ui.loading = true;
+
+	await appwrite.account.create(
+		appwrite.ID.unique(),
+		formData.value.email,
+		formData.value.password,
+		formData.value.name,
+	);
+
+	await login(e);
 };
 </script>

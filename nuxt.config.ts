@@ -16,6 +16,16 @@ export default defineNuxtConfig({
 			},
 		},
 	}]],
+	runtimeConfig: {
+		public: {
+			APP_WRITE_PROJECT_ID: process.env.APP_WRITE_PROJECT_ID,
+			APP_WRITE_PROJECT_DB_ID: process.env.APP_WRITE_PROJECT_DB_ID,
+			APP_WRITE_RECORDS_COLLECTION_ID: process.env.APP_WRITE_RECORDS_COLLECTION_ID,
+			APP_WRITE_STAFF_COLLECTION_ID: process.env.APP_WRITE_STAFF_COLLECTION_ID,
+			APP_WRITE_COMMENTS_COLLECTION_ID: process.env.APP_WRITE_COMMENTS_COLLECTION_ID,
+			APP_WRITE_STORAGE_ID: process.env.APP_WRITE_STORAGE_ID,
+		},
+	},
 	css: ['~/assets/css/main.css'],
 	eslint: {
 		config: {
