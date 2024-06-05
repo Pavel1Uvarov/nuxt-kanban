@@ -47,13 +47,6 @@
 							/>
 						</div>
 
-						<div class="flex items-center justify-between">
-							<div />
-							<a
-								href="#"
-								class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-							>Forgot password?</a>
-						</div>
 						<UiButton
 							variant="default"
 							class="w-full"

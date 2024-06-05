@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const route = useRoute();
-</script>
-
 <template>
 	<div>
 		<h1>Nuxt Routing set up successfully!</h1>
@@ -12,3 +8,15 @@ const route = useRoute();
 		>Learn more about Nuxt Routing</a>
 	</div>
 </template>
+
+<script setup lang="ts">
+import { useKanbanQuery } from '@/composables/useKanbanQuery';
+
+const route = useRoute();
+
+useSeoMeta({
+	title: 'Home | CRM Kanban',
+});
+
+useKanbanQuery();
+</script>
