@@ -12,7 +12,20 @@ export const useKanbanQuery = () => {
 		select(data) {
 			const newBoard = [...KANBAN_DATA];
 			const records = data.documents as unknown as IRecord[];
-			console.log(newBoard, records);
+
+			records.forEach((record) => {
+				const column = newBoard.find(column => column.id === record.status);
+				if (column) {
+					column.cards.push({
+						id: record.id,
+						name: record.name,
+						$createdAt: record.$createdAt,
+						status: record.status,
+					});
+				}
+			});
+
+			return newBoard;
 		},
 	});
 };

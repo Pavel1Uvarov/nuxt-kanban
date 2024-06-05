@@ -28,6 +28,7 @@ export enum EnumPriority {
 }
 
 export interface IRecord extends IBaseField {
+	id: string;
 	comments: IComment[];
 	members: ICustomer[];
 	name: string;

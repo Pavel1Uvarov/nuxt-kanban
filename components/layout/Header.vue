@@ -1,5 +1,5 @@
 <template>
-	<header class="bg-white shadow-md py-4 px-3 flex justify-between">
+	<header class="bg-white shadow py-4 px-3 flex justify-between shadow-gray-300 border-b sticky">
 		<div />
 		<div>
 			<UiButton
