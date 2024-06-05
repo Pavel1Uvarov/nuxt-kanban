@@ -35,6 +35,13 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	typescript: {
+    tsConfig: {
+      compilerOptions: {
+        baseUrl: '.'
+      }
+    }
+  },
 	postcss: {
 		plugins: {
 			tailwindcss: {},
