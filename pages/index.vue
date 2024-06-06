@@ -12,7 +12,7 @@
 				<div class="rounded bg-slate-700 py-1 px-5 mb-2 text-center text-white">
 					{{ column.name }}
 				</div>
-				<div class="p-1 gap-4 bg-white">
+				<div class="p-1 flex flex-col gap-4 bg-white">
 					<UiCard
 						v-for="(card, index) in column.cards"
 						:key="index"
@@ -30,6 +30,7 @@
 					<UiButton
 						class="w-full border border-gray-300 border-dashed hover:bg-gray-200"
 						variant="secondary"
+						@click="handleCardFormModal(column.id)"
 					>
 						<Icon
 							name="line-md:plus"
@@ -40,19 +41,41 @@
 				</div>
 			</div>
 		</div>
+		<ModalsCardForm
+			v-show="ui.showCardFromModal"
+			:column="selectedColumn"
+			@on-submitted="submittedCard"
+			@on-close="closeCardFormModal"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useKanbanQuery } from '@/composables/useKanbanQuery';
-
-const route = useRoute();
+import type { EnumStatus } from '~/types/records.types';
 
 useSeoMeta({
 	title: 'Home | CRM Kanban',
 });
 
-const { data, isLoading, refetch } = useKanbanQuery();
+const selectedColumn = ref('todo');
+const ui = reactive({
+	showCardFromModal: false,
+});
 
-console.log(data.value);
+const { data, refetch } = useKanbanQuery();
+
+const handleCardFormModal = (columnId: EnumStatus) => {
+	selectedColumn.value = columnId;
+	ui.showCardFromModal = true;
+};
+
+const closeCardFormModal = () => {
+	ui.showCardFromModal = false;
+};
+
+const submittedCard = () => {
+	ui.showCardFromModal = false;
+	refetch();
+};
 </script>
