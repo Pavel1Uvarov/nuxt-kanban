@@ -19,16 +19,18 @@
 						v-for="(card, index) in column.cards"
 						:key="index"
 						draggable="true"
+						class="cursor-pointer"
 						@dragstart="handleDragStart(card, column)"
+						@click="showCardDetailsModal(card)"
 					>
 						<UiCardHeader>
-							<UiCardTitle>Card Title</UiCardTitle>
+							<UiCardTitle>{{ card.name }}</UiCardTitle>
 						</UiCardHeader>
 						<UiCardContent>
 							<p>Card Body</p>
 						</UiCardContent>
 						<UiCardFooter>
-							<p>Card Footer</p>
+							<p>{{ dayjs(card.$createdAt) }}</p>
 						</UiCardFooter>
 					</UiCard>
 					<UiButton
@@ -51,14 +53,21 @@
 			@on-submitted="submittedCard"
 			@on-close="closeCardFormModal"
 		/>
+		<ModalsCardDetails
+			v-show="ui.showCardDetailsModal"
+			:card="selectedCard"
+			:show="ui.showCardDetailsModal"
+			@on-close="ui.showCardDetailsModal = false"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query';
+import dayjs from 'dayjs';
 import { useKanbanQuery } from '@/composables/useKanbanQuery';
 import type { ICard, IColumn } from '~/types/kanban/kanban.types';
-import type { EnumStatus, IRecord } from '~/types/records.types';
+import type { EnumStatus } from '~/types/records.types';
 
 useSeoMeta({
 	title: 'Home | CRM Kanban',
@@ -68,10 +77,12 @@ const appwrite = useAppWrite();
 const config = useRuntimeConfig();
 
 const selectedColumn = ref('todo');
-const dragCard = ref({});
-const sourceColumn = ref({});
+const dragCard = ref<ICard | null>(null);
+const sourceColumn = ref<IColumn | null>(null);
+const selectedCard = ref<ICard | null>(null);
 const ui = reactive({
 	showCardFromModal: false,
+	showCardDetailsModal: false,
 });
 
 const { data, refetch } = useKanbanQuery();
@@ -106,6 +117,11 @@ const submittedCard = () => {
 	refetch();
 };
 
+const showCardDetailsModal = (card: ICard) => {
+	selectedCard.value = card;
+	ui.showCardDetailsModal = true;
+};
+
 const handleDragStart = (record: ICard, column: IColumn) => {
 	dragCard.value = record;
 	sourceColumn.value = column;
@@ -116,11 +132,11 @@ const handleDragOver = (event: DragEvent) => {
 };
 
 const handleDragEnd = (targetColumn: IColumn) => {
-	if (dragCard.value.id && sourceColumn.value.id) {
+	if (dragCard.value && sourceColumn.value && dragCard.value.id && sourceColumn.value.id) {
 		mutate({ docId: dragCard.value.id, status: targetColumn.id });
 	}
 
-	dragCard.value = {};
-	sourceColumn.value = {};
+	dragCard.value = null;
+	sourceColumn.value = null;
 };
 </script>

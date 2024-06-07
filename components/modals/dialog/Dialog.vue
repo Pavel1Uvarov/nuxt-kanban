@@ -4,7 +4,10 @@
 		aria-labelledby="modal-title"
 		aria-modal="true"
 	>
-		<div class="fixed inset-0 bg-gray-800 bg-opacity-75 transition-opacity" />
+		<div
+			class="fixed inset-0 bg-gray-800 bg-opacity-75 transition-opacity"
+			@click="close"
+		/>
 
 		<div class="fixed inset-0 z-10 w-screen overflow-y-auto">
 			<div class="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
@@ -49,7 +52,9 @@ defineProps({
 	},
 });
 
-const emit = defineEmits(['onClose']);
+const emit = defineEmits<{
+	(e: 'onClose'): void;
+}>();
 
 const close = () => emit('onClose');
 </script>

@@ -10,7 +10,9 @@ export interface ICustomer extends IBaseField {
 }
 
 export interface IComment extends IBaseField {
+	$id: string;
 	text: string;
+	$createdAt: string;
 }
 
 export enum EnumStatus {
