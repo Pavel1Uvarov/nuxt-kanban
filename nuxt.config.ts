@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	modules: ['@nuxt/eslint', '@nuxt/image', 'shadcn-nuxt', 'nuxt-icon', '@pinia/nuxt', ['@vee-validate/nuxt', { autoImports: true }], ['@nuxtjs/google-fonts', {
+	modules: ['@nuxt/eslint', '@nuxt/image', 'shadcn-nuxt', 'nuxt-icon', '@pinia/nuxt', '@nuxt/test-utils/module', ['@vee-validate/nuxt', { autoImports: true }], ['@nuxtjs/google-fonts', {
 		families: {
 			'Roboto': true,
 			'Inter': '200..700', // Merged the configurations for 'Inter'
