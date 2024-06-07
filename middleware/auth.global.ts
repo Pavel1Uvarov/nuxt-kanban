@@ -1,23 +1,25 @@
 import { useAppWrite } from '~/utils/appwrite';
 import { useAuthStore } from '~/store/auth.store';
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
-	const appwrite = useAppWrite();
-	const authStore = useAuthStore();
-
+export default defineNuxtRouteMiddleware(async (to) => {
 	try {
-		setTimeout(async () => {
-			const user = await appwrite.account.get().catch(() => {});
+		const appwrite = useAppWrite();
+		const authStore = useAuthStore();
 
-			if (user) authStore.setUser(user);
+		const user = await appwrite.account.get().catch(() => {});
 
-			if (user && to.name === 'login') {
+		if (user) {
+			authStore.setUser(user);
+
+			if (to.name === 'login') {
 				return navigateTo('/');
 			}
-			else if (!user && to.name !== 'login') {
+		}
+		else {
+			if (to.name !== 'login') {
 				return navigateTo('/login');
 			}
-		});
+		}
 	}
 	catch (error) {
 		console.error(error);

@@ -26,6 +26,11 @@ export default defineNuxtConfig({
 			APP_WRITE_STORAGE_ID: process.env.APP_WRITE_STORAGE_ID,
 		},
 	},
+	routeRules: {
+		login: {
+			ssr: false,
+		},
+	},
 	css: ['~/assets/css/main.css'],
 	eslint: {
 		config: {
